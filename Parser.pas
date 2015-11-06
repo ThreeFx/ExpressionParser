@@ -39,7 +39,7 @@ IMPLEMENTATION
 	
 	FUNCTION IsBinOp(expr : String; index : Integer)
 	BEGIN
-		result := GetOpType(expr, index, lower, upper) = 2;
+		result := GetOpType(expr, index) = 2;
 	END;
 	
 	FUNCTION GetOperatorPrecedence(op : Char) : Integer;
@@ -53,19 +53,19 @@ IMPLEMENTATION
 	
 	FUNCTION HasNextBinaryOperator(expr : String; index, lower, upper : Integer) : Boolean;
 	BEGIN
-		IF index = upper + 1 THEN
+		IF lower = upper + 1 THEN
 			result := false
-		ELSE IF IsBinOp(expr, index, lower, upper) THEN
+		ELSE IF IsBinOp(expr, lower) THEN
 			result := true
 		ELSE
-			result := HasNextBinaryOperator(expr, index + 1, lower, upper);
+			result := HasNextBinaryOperator(expr, lower + 1, upper);
 	
 	FUNCTION GetIndexOfNextBinaryOperator(expr : String; lower, upper : Integer) : Integer;
 	BEGIN
 		IF IsBinOp(expr, lower) THEN
 			result := index
 		ELSE
-			result := GetIndexOfNextBinaryOperator(expr, lower, upper);
+			result := GetIndexOfNextBinaryOperator(expr, lower + 1, upper);
 	END;
 	
 	FUNCTION GetIndexOfNextOperator(expr : String; lower, upper : Integer) : Integer;
