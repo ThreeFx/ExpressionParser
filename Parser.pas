@@ -60,20 +60,21 @@ IMPLEMENTATION
 		ELSE
 			result := HasNextBinaryOperator(expr, index + 1, lower, upper);
 	
-	FUNCTION GetIndexOfNextBinaryOperator(expr : String; index, lower, upper : Integer) : Integer;
+	FUNCTION GetIndexOfNextBinaryOperator(expr : String; lower, upper : Integer) : Integer;
 	BEGIN
-		IF IsBinOp(expr, index) THEN
+		IF IsBinOp(expr, lower) THEN
 			result := index
 		ELSE
-			result := GetIndexOfNextBinaryOperator(expr, index + 1, lower, upper);
+			result := GetIndexOfNextBinaryOperator(expr, lower, upper);
 	END;
 	
-	FUNCTION GetIndexOfNextOperator(expr : String; index, lower, upper : Integer) : Integer;
+	FUNCTION GetIndexOfNextOperator(expr : String; lower, upper : Integer) : Integer;
 	VAR
 		minimum : Integer;
 		precedence : Integer;
+		index : Integer;
 	BEGIN
-		result := index;
+		index := lower;
 		minimum := 100000;
 		WHILE index <= Length(String) DO
 		BEGIN
@@ -90,11 +91,11 @@ IMPLEMENTATION
 		END;
 	END;
 		
-	FUNCTION ParseExpr(expr : String; index, lower, upper : Integer) : TNode;
+	FUNCTION ParseExpr(expr : String; lower, upper : Integer) : TNode;
 	VAR
 		nextBinOpIndex : Integer;
 	BEGIN
-		IF HasNextBinaryOperator(expr, index, lower, upper) THEN
+		IF HasNextBinaryOperator(expr, lower, upper) THEN
 		BEGIN
 			nextBinOpIndex := 
 			result := TBinaryOperator.Create(
@@ -104,7 +105,7 @@ IMPLEMENTATION
 	
 	FUNCTION ParseExpr(expr : String) : TNode; OVERLOAD;
 	BEGIN
-		result := ParseExpr(expr, 1, 1, Length(expr));
+		result := ParseExpr(expr, 1, Length(expr));
 	END;
 
 BEGIN
