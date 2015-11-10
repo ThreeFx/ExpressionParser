@@ -2,36 +2,52 @@ UNIT StackElement;
 
 INTERFACE
 	TYPE
-		Operator = FUNCTION(operands : ARRAY OF TStackValue) : Integer;
-	
 		TStackElement = CLASS
+			PUBLIC
+				DESTRUCTOR Dispose;
 		END;
-	
+
 		TStackValue = CLASS(TStackElement)
 			PRIVATE
 				theValue : Integer;
-				
+
 			PUBLIC
 				CONSTRUCTOR Create(val : Integer);
 				FUNCTION GetValue() : Integer;
 		END;
-		
+
+		OpPtr = FUNCTION(operands : ARRAY OF TStackValue) : Integer;
+
 		TStackOperator = CLASS(TStackElement)
 			PRIVATE
+				func : OpPtr;
 				CLASS VAR Plus, Minus, Times, DividedBy, UnaryMinus : TStackOperator;
-				CONSTRUCTOR Create(op : Operator);
-				
+				CONSTRUCTOR Create(op : OpPtr);
 			PUBLIC
+				FUNCTION Evaluate(values : ARRAY OF TStackvalue) : Integer;
 				CLASS FUNCTION OpPlus() : TStackOperator;
 				CLASS FUNCTION OpMinus() : TStackOperator;
 				CLASS FUNCTION OpTimes() : TStackOperator;
 				CLASS FUNCTION OpDividedBy() : TStackOperator;
 				CLASS FUNCTION OpUnaryMinus() : TStackOperator;
-			
-			
 		END;
 
 IMPLEMENTATION
+
+        DESTRUCTOR TStackElement.Dispose();
+        BEGIN
+
+        END;
+
+        CONSTRUCTOR TStackOperator.Create(op : OpPtr);
+        BEGIN
+                func := op;
+        END;
+
+        FUNCTION TStackOperator.Evaluate(values : ARRAY OF TStackValue) : Integer;
+        BEGIN
+                result := func(values);
+        END;
 
 	CONSTRUCTOR TStackValue.Create(val : Integer);
 	BEGIN
@@ -68,7 +84,7 @@ IMPLEMENTATION
 		result := -operands[0].GetValue();
 	END;
 	
-	CLASS FUNCTION TStackOperator.OpUnaryMinus() : TStackOperator;
+	CLASS FUNCTION TStackOperator.OpMinus() : TStackOperator;
 	BEGIN
 		result := Minus;
 	END;
@@ -88,15 +104,16 @@ IMPLEMENTATION
 		result := Times;
 	END;
 	
-	CLASS FUNCTION TStackOperator.OpUnaryMinus() : TStackOperator;
+
+        CLASS FUNCTION TStackOperator.OpUnaryMinus() : TStackOperator;
 	BEGIN
 		result := UnaryMinus;
 	END;
 
 	BEGIN
-		TStackOperator.Plus = TStackOperator.Create(@Add);
-		TStackOperator.Minus = TStackOperator.Create(@Sub);
-		TStackOperator.Times = TStackOperator.Create(@Mul);
-		TStackOperator.DividedBy = TStackOperator.Create(@Divi);
-		TStackOperator.UnaryMinus = TStackOperator.Create(@Neg);
+		TStackOperator.Plus := TStackOperator.Create(@Add);
+		TStackOperator.Minus := TStackOperator.Create(@Sub);
+		TStackOperator.Times := TStackOperator.Create(@Mul);
+		TStackOperator.DividedBy := TStackOperator.Create(@Divi);
+		TStackOperator.UnaryMinus := TStackOperator.Create(@Neg);
 	END.
