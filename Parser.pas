@@ -1,6 +1,6 @@
 UNIT Parser;
 
-USES TNode, Utils, SysUtils; // more to come
+USES Node, Utils, SysUtils; // more to come
 
 INTERFACE
 
