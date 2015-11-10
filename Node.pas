@@ -7,7 +7,7 @@ INTERFACE
 		TNode = CLASS
 			PUBLIC
 				FUNCTION Evaluate() : Integer; VIRTUAL; ABSTRACT;
-				DESTRUCTOR Destroy; VIRTUAL;
+				DESTRUCTOR Destroy; VIRTUAL; ABSTRACT;
 		END;
 		
 		TBinaryOperator = CLASS(TNode)
@@ -66,36 +66,36 @@ INTERFACE
 		
 IMPLEMENTATION
 	
-	CONSTRUCTOR TAdd.Create(a, b: TNode);
+	CONSTRUCTOR TAdd.Create(a,b : TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TSub.Create(a, b: TNode);
+	CONSTRUCTOR TSub.Create(a,b : TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TMul.Create(a, b: TNode);
+	CONSTRUCTOR TMul.Create(a,b : TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TDiv.Create(a, b: TNode);
+	CONSTRUCTOR TDiv.Create(a,b : TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TMin.Create(a: TNode);
+	CONSTRUCTOR TMin.Create(a : TNode);
 	BEGIN
 		self.child := a;
 	END;
 		
-	CONSTRUCTOR TValue.Create(a: Integer);
+	CONSTRUCTOR TValue.Create(a : Integer);
 	BEGIN
 		self.wert := a;
 	END;
@@ -142,8 +142,8 @@ IMPLEMENTATION
 	
 	FUNCTION TMin.Evaluate(): Integer;
 	BEGIN
-		result := -child;
+		result := -child.Evaluate;
 	END;
 	
 BEGIN
-END.
+END.                                     
