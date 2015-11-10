@@ -2,7 +2,7 @@ UNIT Parser;
 
 INTERFACE
 
-        USES Node, Utils, StrUtils, SysUtils; // more to come
+        USES Node, StrUtils, SysUtils; // more to come
 
 	FUNCTION ParseExpr(expr : String) : TNode; OVERLOAD;
 
