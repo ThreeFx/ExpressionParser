@@ -66,36 +66,36 @@ INTERFACE
 		
 IMPLEMENTATION
 	
-	CONSTRUCTOR TAdd.Create;
+	CONSTRUCTOR TAdd.Create(a, b: TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TSub.Create;
+	CONSTRUCTOR TSub.Create(a, b: TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TMul.Create;
+	CONSTRUCTOR TMul.Create(a, b: TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TDiv.Create;
+	CONSTRUCTOR TDiv.Create(a, b: TNode);
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	CONSTRUCTOR TMin.Create;
+	CONSTRUCTOR TMin.Create(a: TNode);
 	BEGIN
 		self.child := a;
 	END;
 		
-	CONSTRUCTOR TValue.Create;
+	CONSTRUCTOR TValue.Create(a: Integer);
 	BEGIN
 		self.wert := a;
 	END;
