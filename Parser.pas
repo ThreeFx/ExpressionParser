@@ -30,16 +30,16 @@ IMPLEMENTATION
 	
 	FUNCTION IsOp(expr : String; index, lower, upper : Integer) : Boolean;
 	BEGIN
-		result := GetOpType(expr, index, lower, upper) > 0;
+		result := GetOpType(expr, index, lower) > 0;
 	END;
 	
 	FUNCTION IsUnOp(expr : String; index, lower, upper : Integer) : Boolean;
 	BEGIN
-		result := GetOpType(expr, index, lower, upper) = 1;
+		result := GetOpType(expr, index, lower) = 1;
 	
-	FUNCTION IsBinOp(expr : String; index : Integer)
+	FUNCTION IsBinOp(expr : String; index, lower, upper : Integer)
 	BEGIN
-		result := GetOpType(expr, index) = 2;
+		result := GetOpType(expr, index, lower) = 2;
 	END;
 	
 	FUNCTION GetOperatorPrecedence(op : Char) : Integer;
@@ -53,14 +53,14 @@ IMPLEMENTATION
 	
 	FUNCTION HasNextBinaryOperator(expr : String; index, lower, upper : Integer) : Boolean;
 	BEGIN
-		IF lower = upper + 1 THEN
+		IF index = upper + 1 THEN
 			result := false
-		ELSE IF IsBinOp(expr, lower) THEN
+		ELSE IF IsBinOp(expr, uppe, lower) THEN
 			result := true
 		ELSE
-			result := HasNextBinaryOperator(expr, lower + 1, upper);
+			result := HasNextBinaryOperator(expr, index + 1, lower, upper);
 	
-	FUNCTION GetIndexOfNextBinaryOperator(expr : String; lower, upper : Integer) : Integer;
+	FUNCTION GetIndexOfNextBinaryOperator(expr : String; index, lower, upper : Integer) : Integer;
 	BEGIN
 		IF IsBinOp(expr, lower) THEN
 			result := index
@@ -76,9 +76,9 @@ IMPLEMENTATION
 	BEGIN
 		index := lower;
 		minimum := 100000;
-		WHILE index <= Length(String) DO
+		WHILE index <= upper DO
 		BEGIN
-			IF HasNextBinaryOperator(expr, index, lower, upper) THEN
+			IF HasNextBinaryOperator(expr, lower, upper) THEN
 			BEGIN
 				precedence := GetOperatorPrecedence([GetIndexOfNextBinaryOperator(expr, index, lower, upper)]);
 				IF precedence < minimum THEN
@@ -97,10 +97,10 @@ IMPLEMENTATION
 	BEGIN
 		IF HasNextBinaryOperator(expr, lower, upper) THEN
 		BEGIN
-			nextBinOpIndex := 
+			nextBinOpIndex := GetIndexOfNextOperator(expr, lower, lower, upper);
 			result := TBinaryOperator.Create(
-											ParseExp(expr, lower, lower, index - 1),
-											ParseExp(expr, index + 1, index + 1, ;
+			                                 ParseExp(expr, lower, lower, index - 1),
+			                                 ParseExp(expr, index + 1, upper);
 	END;
 	
 	FUNCTION ParseExpr(expr : String) : TNode; OVERLOAD;
