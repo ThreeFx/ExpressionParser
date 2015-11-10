@@ -165,7 +165,7 @@ IMPLEMENTATION
 		WHILE lower <= upper DO
 		BEGIN
 			result := true;
-			IF Ord(expr[lower]) < 48 OR ord(Expr[lower]) > 58 THEN
+			IF (Ord(expr[lower]) < 48) OR (ord(Expr[lower]) > 58) THEN
 			BEGIN
 				result := false;
 				exit;
@@ -175,7 +175,7 @@ IMPLEMENTATION
 
 
 
-	FUNCTION ParseExpr(expr : String; lower, upper : Integer) : TNode;
+	FUNCTION ParseExpr(expr : String; lower, upper : Integer) : TNode; OVERLOAD;
 	VAR
 		nextBinOpIndex : Integer;
 	BEGIN
@@ -199,7 +199,7 @@ IMPLEMENTATION
 			{WriteLn(Copy(expr, lower, upper - lower + 1));}
 			result := TValue.Create(StrToInt(Copy(expr, lower, upper - lower + 1)));
 		END
-		ELSE
+		ELSE BEGIN
 			result := TVar.Create(Copy(expr, lower, upper - lower + 1));
 		ENd;
 	END;

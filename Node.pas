@@ -14,6 +14,8 @@ INTERFACE
 			PROTECTED
 				leftChild, rightChild: TNode;
 			PUBLIC
+				FUNCTION GetLeftChild() : TNode;
+				FUNCTION GetRightChild() : TNode;
 				DESTRUCTOR Destroy; OVERRIDE;
 		END;
 
@@ -54,6 +56,7 @@ INTERFACE
 			PROTECTED
 				child: TNode;
 			PUBLIC
+				FUNCTION GetChild() : TNode;
 				DESTRUCTOR Destroy; OVERRIDE;
 		END;
 
@@ -69,8 +72,33 @@ INTERFACE
 			PUBLIC
 				CONSTRUCTOR Create(a: String);
 				FUNCTION Evaluate() : Integer; OVERRIDE;
+		END;
 
 IMPLEMENTATION
+
+	CONSTRUCTOR TVar.Create(a : String);
+	BEGIN
+	END;
+
+	FUNCTION TVar.Evaluate() : Integer;
+	BEGIN
+		result := 0;
+	END;
+
+	FUNCTION TBinaryOperator.GetLeftChild() : TNode;
+	BEGIN
+		result := leftChild;
+	END;
+
+	FUNCTION TBinaryOperator.GetRightChild() : TNode;
+	BEGIN
+		result := rightChild;
+	END;
+
+	FUNCTION TUnaryOperator.GetChild() : TNode;
+	BEGIN
+		result := child;
+	END;
 
 	CONSTRUCTOR TAdd.Create(a,b : TNode);
 	BEGIN

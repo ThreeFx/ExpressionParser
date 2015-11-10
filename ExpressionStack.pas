@@ -1,9 +1,7 @@
  UNIT ExpressionStack;
 
-
-
 INTERFACE
-        USES StackElement;
+	USES StackElement, Node;
 
 	TYPE
 		TExpressionStack = CLASS
@@ -12,8 +10,10 @@ INTERFACE
 				FUNCTION pop() : TStackElement;
                 FUNCTION operatorOnTop() : Boolean;
                 FUNCTION Print() : String;
+				PROCEDURE handleNode(it : TNode);
 			PUBLIC
 				CONSTRUCTOR Create();
+				CONSTRUCTOR FromTree(upper : TNode);
 				DESTRUCTOR Dispose();
 
 				PROCEDURE Push(elem : TStackElement);
@@ -22,6 +22,43 @@ INTERFACE
 		END;
 
 IMPLEMENTATION USES SysUtils;
+
+	CONSTRUCTOR TExpressionStack.FromTree(upper : TNode);
+	BEGIN
+		SetLength(underlying, 0);
+
+
+	END;
+
+	PROCEDURE TExpressionStack.handleNode(it : TNode);
+	BEGIN
+		IF it IS TBinaryOperator THEN
+		BEGIN
+			IF it IS TAdd THEN BEGIN
+				Push(TStackOperator.OpPlus)
+				END
+			ELSE IF it IS TSub THEN BEGIN
+				Push(TStackOperator.OpMinus)
+				END
+			ELSE IF it IS TDiv THEN BEGIN
+				Push(TStackOperator.OpDividedBy);
+				END
+			ELSE IF it IS TMul THEN BEGIN
+				Push(TStackOperator.OpTimes);
+			END;
+			handleNode((it AS TBinaryOperator).GetRightChild);
+			handleNode((it AS TBinaryOperator).GetLeftChild);
+		END
+		ELSE IF it IS TMin THEN
+		BEGIN
+			Push(TStackOperator.UnaryMinus);
+			handleNode((it AS TUnaryOperator).GetChild);
+		END
+		ELSE IF it IS TValue THEN
+		BEGIN
+			Push(TStackValue.Create(it.Evaluate));
+		END;
+	END;
 
 	CONSTRUCTOR TExpressionStack.Create();
 	BEGIN
