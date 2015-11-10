@@ -103,6 +103,31 @@ IMPLEMENTATION
 	//	result := GetIndexOfNextBinaryOperator(expr, lower, lower, upper);
 	//END;
 	
+	FUNCTION GetParenParity(expr : String; lower, upper : Integer) : Integer;
+	VAR
+		counter : Integer;
+	BEGIN
+		counter := 0;
+		WHILE lower <= upper DO
+		BEGIN
+			IF expr[lower] = '(' THEN
+			BEGIN
+				Inc(counter);
+			END
+			ELSE IF expr[lower] = ')' THEN
+			BEGIN
+				Dec(counter);
+			END;
+			Inc(lower);
+		END;
+		result := counter;
+	END;
+	
+	FUNCTION IsGoodParen(expr : String; lower, upper : Integer) : Boolean;
+	BEGIN
+		result := GetParenParity(expr, lower, upper) = 0;
+	END;
+	
 	FUNCTION GetIndexOfNextOperator(expr : String; lower, upper : Integer) : Integer;
 	VAR
 		minimum : Integer;
@@ -135,7 +160,23 @@ IMPLEMENTATION
 			'/': result := TDiv.Create(leftChild, rightChild);
 		END;
 	END;
-		
+	
+	FUNCTION IsNumber(expr : String; lower, upper : Integer) : Boolean;
+	BEGIN
+		result := false;
+		WHILE lower <= upper DO
+		BEGIN
+			result := true;
+			IF Ord(expr[lower]) < 48 OR ord(Expr[lower]) > 58 THEN
+			BEGIN
+				result := false;
+				exit;
+			END;
+		END;
+	END;
+	
+	
+	
 	FUNCTION ParseExpr(expr : String; lower, upper : Integer) : TNode;
 	VAR
 		nextBinOpIndex : Integer;
@@ -155,11 +196,14 @@ IMPLEMENTATION
 		BEGIN
 			result := TMin.Create(ParseExpr(expr, lower + 1, upper));
 		END
-		ELSE
-                BEGIN
-                        //WriteLn(Copy(expr, lower, upper - lower + 1));
+		ELSE IF IsNumber(expr, lower, upper) THEN
+        BEGIN
+            //WriteLn(Copy(expr, lower, upper - lower + 1));
 			result := TValue.Create(StrToInt(Copy(expr, lower, upper - lower + 1)));
-		END;
+		END
+		ELSE
+			result := TVar.Create(Copy(expr, lower, upper - lower + 1));
+		ENd;
 	END;
 	
 	FUNCTION ParseExpr(expr : String) : TNode; OVERLOAD;
