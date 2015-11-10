@@ -51,27 +51,28 @@ IMPLEMENTATION USES SysUtils;
 		underlying[High(underlying)] := elem;
 	END;
 
-        FUNCTION TExpressionStack.operatorOnTop() : Boolean;
-        BEGIN
-             result := underlying[High(underlying)] IS TStackOperator;
-        END;
+	FUNCTION TExpressionStack.operatorOnTop() : Boolean;
+	BEGIN
+		result := underlying[High(underlying)] IS TStackOperator;
+	END;
 
-        FUNCTION TExpressionStack.Print() : String;
-        VAR
-                elem : TStackElement;
-        BEGIN
-             result := '';
-             FOR elem in underlying DO
-             BEGIN
-                     if elem IS TStackValue THEN BEGIN
-                       result := result + IntToStr((elem AS TStackValue).GetValue());
-                     end
-                     else begin
-                       result := result + 'Op';
-                     end;
-                     result := result + ' ';
-             end;
-        END;
+	FUNCTION TExpressionStack.Print() : String;
+	VAR
+		elem : TStackElement;
+	BEGIN
+		result := '';
+		FOR elem IN underlying DO
+		BEGIN
+			IF elem IS TStackValue THEN
+			BEGIN
+				result := result + IntToStr((elem AS TStackValue).GetValue());
+			end
+			ELSE BEGIN
+				result := result + 'Op';
+			END;
+			result := result + ' ';
+		END;
+	END;
 
 	FUNCTION TExpressionStack.Evaluate() : Integer;
 	VAR

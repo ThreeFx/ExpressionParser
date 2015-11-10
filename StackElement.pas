@@ -34,26 +34,26 @@ INTERFACE
 
 IMPLEMENTATION
 
-        DESTRUCTOR TStackElement.Dispose();
-        BEGIN
+	DESTRUCTOR TStackElement.Dispose();
+	BEGIN
 
-        END;
+	END;
 
-        CONSTRUCTOR TStackOperator.Create(op : OpPtr);
-        BEGIN
-                func := op;
-        END;
+	CONSTRUCTOR TStackOperator.Create(op : OpPtr);
+	BEGIN
+		func := op;
+	END;
 
-        FUNCTION TStackOperator.Evaluate(values : ARRAY OF TStackValue) : Integer;
-        BEGIN
-                result := func(values);
-        END;
+	FUNCTION TStackOperator.Evaluate(values : ARRAY OF TStackValue) : Integer;
+	BEGIN
+		result := func(values);
+	END;
 
 	CONSTRUCTOR TStackValue.Create(val : Integer);
 	BEGIN
 		theValue := val;
 	END;
-	
+
 	FUNCTION TStackValue.GetValue() : Integer;
 	BEGIN
 		result := theValue;
@@ -63,49 +63,49 @@ IMPLEMENTATION
 	BEGIN
 		result := operands[0].GetValue() + operands[1].GetValue();
 	END;
-	
+
 	FUNCTION Sub(operands : ARRAY OF TStackValue) : Integer;
 	BEGIN
 		result := operands[0].GetValue() - operands[1].GetValue();
 	END;
-	
+
 	FUNCTION Mul(operands : ARRAY OF TStackValue) : Integer;
 	BEGIN
 		result := operands[0].GetValue() * operands[1].GetValue();
 	END;
-	
+
 	FUNCTION Divi(operands : ARRAY OF TStackValue) : Integer;
 	BEGIN
 		result := operands[0].GetValue() div operands[1].GetValue();
 	END;
-	
+
 	FUNCTION Neg(operands : ARRAY OF TStackValue) : Integer;
 	BEGIN
 		result := -operands[0].GetValue();
 	END;
-	
+
 	CLASS FUNCTION TStackOperator.OpMinus() : TStackOperator;
 	BEGIN
 		result := Minus;
 	END;
-	
+
 	CLASS FUNCTION TStackOperator.OpPlus() : TStackOperator;
 	BEGIN
 		result := Plus;
 	END;
-	
+
 	CLASS FUNCTION TStackOperator.OpDividedBy() : TStackOperator;
 	BEGIN
 		result := DividedBy;
 	END;
-	
+
 	CLASS FUNCTION TStackOperator.OpTimes() : TStackOperator;
 	BEGIN
 		result := Times;
 	END;
-	
 
-        CLASS FUNCTION TStackOperator.OpUnaryMinus() : TStackOperator;
+
+	CLASS FUNCTION TStackOperator.OpUnaryMinus() : TStackOperator;
 	BEGIN
 		result := UnaryMinus;
 	END;
