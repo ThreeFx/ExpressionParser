@@ -66,36 +66,36 @@ INTERFACE
 		
 IMPLEMENTATION
 	
-	FUNCTION TAdd.Create;
+	CONSTRUCTOR TAdd.Create;
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	FUNCTION TSub.Create;
+	CONSTRUCTOR TSub.Create;
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	FUNCTION TMul.Create;
+	CONSTRUCTOR TMul.Create;
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	FUNCTION TDiv.Create;
+	CONSTRUCTOR TDiv.Create;
 	BEGIN
 		self.leftchild := a;
 		self.rightchild := b;
 	END;
 		
-	FUNCTION TMin.Create;
+	CONSTRUCTOR TMin.Create;
 	BEGIN
 		self.child := a;
 	END;
 		
-	FUNCTION TValue.Create;
+	CONSTRUCTOR TValue.Create;
 	BEGIN
 		self.wert := a;
 	END;
@@ -114,3 +114,36 @@ IMPLEMENTATION
 	DESTRUCTOR TValue.Destroy;
 	BEGIN
 	END;
+	
+	FUNCTION TAdd.Evaluate(): Integer;
+	BEGIN
+		result := leftchild.Evaluate + rightchild.Evaluate;
+	END;
+	
+	FUNCTION TSub.Evaluate(): Integer;
+	BEGIN
+		result := leftchild.Evaluate - rightchild.Evaluate;
+	END;
+	
+	FUNCTION TDiv.Evaluate(): Integer;
+	BEGIN
+		result := leftchild.Evaluate DIV rightchild.Evaluate;
+	END;
+	
+	FUNCTION TMul.Evaluate(): Integer;
+	BEGIN
+		result := leftchild.Evaluate * rightchild.Evaluate;
+	END;
+	
+	FUNCTION TValue.Evaluate(): Integer;
+	BEGIN
+		result := self.wert;
+	END;
+	
+	FUNCTION TMin.Evaluate(): Integer;
+	BEGIN
+		result := -child;
+	END;
+	
+BEGIN
+END.
