@@ -64,6 +64,12 @@ INTERFACE
 				FUNCTION Evaluate() : Integer; OVERRIDE;
 		END;
 		
+		TVar = CLASS(TNode)
+			PROTECTED
+			PUBLIC
+				CONSTRUCTOR Create(a: String);
+				FUNCTION Evaluate() : Integer; OVERRIDE;
+		
 IMPLEMENTATION
 	
 	CONSTRUCTOR TAdd.Create(a,b : TNode);
